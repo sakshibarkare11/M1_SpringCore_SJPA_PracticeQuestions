@@ -1,0 +1,350 @@
+Global rating
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class PlantInfo { 
+	private Map<String, Float> plantDetailsMap =new HashMap<String, Float>(); //syntax
+
+	public Map<String, Float> getPlantDetailsMap() {
+		return plantDetailsMap;
+	}
+
+	public void setPlantDetailsMap(Map<String, Float> plantDetailsMap) {
+		this.plantDetailsMap = plantDetailsMap;
+	}
+	public void addPlantDetails(String plantName,float rating) {
+		plantDetailsMap.put(plantName, rating);
+	}
+	public float findPlantRating(String plantName) {
+		//Float rating = plantDetailsMap.get(plantName.toLowwerCase());		
+		Float rating=plantDetailsMap.get(plantName.toLowerCase());//doubt
+		if(rating!=null) {
+			return rating;
+		}else {
+			return -1;
+		}
+	}
+	public List<String>findPlantsWithHighestRating(){
+		List<String> highestrating=new ArrayList<>();
+		for(Map.Entry<String,Float> b:plantDetailsMap.entrySet()) {
+			if(entry.getValue()==5) {
+				highestrating.add(b.getKey());// key-plantname  value-rating---- raj
+			}
+		}
+		return highestrating;
+	}
+
+
+
+
+
+}
+import java.util.List;
+import java.util.Scanner;
+
+public class UserInterface {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		PlantInfo pi=new PlantInfo();
+		System.out.println("Enter number of plants details to be added:");
+		int noOfPlants=sc.nextInt();
+		sc.nextLine();
+		System.out.println("Enter the plants details(Plant Name: Rating):");
+		for(int i=0;i<noOfPlants;i++) {
+			String[] input=sc.next().split(":");
+			String plantName=input[0];
+			float rating=Float.parseFloat(input[1]);
+			pi.addPlantDetails(plantName, rating);
+		}
+		System.out.println("Enter the plant name needs to be searched");
+		String search=sc.next();
+		float rating=pi.findPlantRating(search);
+		if(rating!=-1){
+			System.out.println(rating);
+		}else {
+			System.out.println(search+" is not available in the given plant details");
+		}
+		
+		List<String> highestrating=pi.findPlantsWithHighestRating();
+		if(highestrating.isEmpty()) {
+			System.out.println("No plants were found with the highest rating");
+		}else {
+			System.out.println("The names of the plants with the highest rating are:");
+			sc.nextLine();
+			for(String plantName:highestrating) {
+				System.out.println(plantName);
+			}
+		}
+	}
+
+}
+
+Zmovies--------------
+import java.util.*;
+import java.util.Map.Entry;
+ 
+public class MoviesInfo {
+ 
+	private Map<String, Float> movieDetailsMap = new HashMap<String, Float>();
+ 
+	public Map<String, Float> getMovieDetailsMap() {
+		return movieDetailsMap;
+	}
+
+	public void setMovieDetailsMap(Map<String, Float> movieDetailsMap) {
+		this.movieDetailsMap = movieDetailsMap;
+	}
+ 
+	public void addMoviesDetails(String movieName, float rating) {
+		
+		this.movieDetailsMap.put(movieName, rating);
+	}
+ 
+	public float findMovieRating(String movieName) {
+		// Fill the code here
+		Float rating=movieDetailsMap.get(movieName.toLowerCase());
+		if(rating!=null) {
+			return rating;
+		}else {
+			return -1;
+		}
+		
+	}
+ 
+	public List<String> findMoviesWithHighestRating() {
+		List<String> highestrating = new ArrayList<>();
+		for(Map.Entry<String ,Float> y:movieDetailsMap.entrySet()) {
+			if(y.getValue()==5.0f) {
+				highestrating.add(y.getKey());
+			}
+		}
+		return highestrating;
+	}
+}
+
+
+
+
+
+import java.util.List;
+import java.util.Scanner;
+ 
+public class UserInterface {
+ 
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		CyberSecurity cs=new CyberSecurity();
+		System.out.println("Enter number of records to be added");
+		int n=sc.nextInt();
+		sc.nextLine();
+		System.out.println("Enter the records (Analyst Id: Cyber Security Type)");
+		for(int i=0;i<n;i++) {
+			String details=sc.nextLine();
+			cs.addCyberSecurityDetails(details);
+		}
+		System.out.println("Enter the Cyber Security type to be searched");
+		String cyberSecurityType=sc.nextLine();
+		//sc.nextLine();
+		int cou=cs.findTheCountOfAnalystIdsBasedOnTheCyberSecurityType(cyberSecurityType);
+		//sc.nextLine();
+		if(cou==-1) {
+			System.out.println("No Analyst were found for "+cyberSecurityType);
+		}
+		else {
+		System.out.println("Count of Analyst Ids based on "+cyberSecurityType+" is "+cou);
+		}
+		System.out.println("Enter the Cyber Security type to identify the Analyst Ids");
+		String cst=sc.nextLine();
+		List<String> lis=cs.findAnalystIdsBasedOnTheCyberSecurityType(cst);
+		if(lis.isEmpty()) {
+			System.out.println("No Analyst Ids were found for the "+cst);
+		}
+		else {
+			for(var v:lis)
+			{
+				System.out.println("Analyst Ids based on the "+cst+" are ");
+				System.out.println(v);
+			}
+		}
+		
+ 
+	}
+ 
+}
+
+Fruitstall------
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+ 
+public class FruitStall {
+    private Map<String, Double> fruitMap = new HashMap<>();
+ 
+    public void addFruits(String fruitName, double quantity) {
+        // Add or update quantity for a fruit
+        fruitMap.put(fruitName, quantity);
+    }
+ 
+    public double findQuantity(String fruitName) {
+        // Retrieve quantity for a specific fruit
+    	 Double quantity = fruitMap.get(fruitName);
+    	    if (quantity != null) {
+    	        return quantity;
+    	    } else {
+    	        return 0.0;  // Return 0 if the fruit is not found
+    	    }
+    }
+ 
+    public List<String> findFruitsToBePurchased(int minQty) {
+        // Find fruits with quantity greater than or equal to minQty
+        List<String> fruitsToBePurchased = new ArrayList<>();
+        for (Map.Entry<String, Double> p : fruitMap.entrySet()) {
+            if (p.getValue() >= minQty) {
+                fruitsToBePurchased.add(p.getKey());
+            }
+        }
+        return fruitsToBePurchased;
+    }
+}
+import java.util.List;
+import java.util.Scanner;
+ 
+public class UserInterface {
+    public static void main(String args[]) {
+        FruitStall fp = new FruitStall();
+        Scanner sc = new Scanner(System.in);
+ 
+        System.out.println("Enter number of fruits to be added:");
+        int numberOfFruits = sc.nextInt();
+        sc.nextLine(); // Consume newline
+        
+        System.out.println("Enter the fruit details (FruitName:Quantity)");
+        for (int i = 0; i < numberOfFruits; i++) {
+            String fruitDetails = sc.nextLine();
+            String[] arr = fruitDetails.split(":");
+            
+            if (arr.length == 2) {
+                String fruitName = arr[0];
+                double quantity = Double.parseDouble(arr[1]);
+                fp.addFruits(fruitName, quantity);
+            } else {
+                System.out.println("Invalid input format. Please enter details again.");
+                i--; // Ask for input again
+            }
+        }
+        
+        System.out.println("Enter the fruit name to find quantity:");
+        String fruitName = sc.nextLine();
+        double quantity = fp.findQuantity(fruitName);
+        System.out.println("Quantity of " + fruitName + " is: " + quantity);
+        
+        System.out.println("Enter the minimum quantity to find fruits to be purchased:");
+        int minQuantity = sc.nextInt();
+        List<String> fruitsToBePurchased = fp.findFruitsToBePurchased(minQuantity);
+        System.out.println("Fruits to be purchased with at least " + minQuantity + " quantity:");
+        for (String fruit : fruitsToBePurchased) {
+            System.out.println(fruit);
+        }
+ 
+        sc.close();
+    }
+}
+Cybersecurity------
+import java.util.List;
+import java.util.Scanner;
+ 
+public class UserInterface {
+ 
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		CyberSecurity cs=new CyberSecurity();
+		System.out.println("Enter number of records to be added");
+		int n=sc.nextInt();
+		sc.nextLine();
+		System.out.println("Enter the records (Analyst Id: Cyber Security Type)");
+		for(int i=0;i<n;i++) {
+			String details=sc.nextLine();
+			cs.addCyberSecurityDetails(details);
+		}
+		System.out.println("Enter the Cyber Security type to be searched");
+		String cyberSecurityType=sc.nextLine();
+		//sc.nextLine();
+		int cou=cs.findTheCountOfAnalystIdsBasedOnTheCyberSecurityType(cyberSecurityType);
+		//sc.nextLine();
+		if(cou==-1) {
+			System.out.println("No Analyst were found for "+cyberSecurityType);
+		}
+		else {
+		System.out.println("Count of Analyst Ids based on "+cyberSecurityType+" is "+cou);
+		}
+		System.out.println("Enter the Cyber Security type to identify the Analyst Ids");
+		String cst=sc.nextLine();
+		List<String> lis=cs.findAnalystIdsBasedOnTheCyberSecurityType(cst);
+		if(lis.isEmpty()) {
+			System.out.println("No Analyst Ids were found for the "+cst);
+		}
+		else {
+			for(var v:lis)
+			{
+				System.out.println("Analyst Ids based on the "+cst+" are ");
+				System.out.println(v);
+			}
+		}
+		
+ 
+	}
+ 
+}
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+ 
+public class CyberSecurity {
+	private Set<String> cyberSecuritySet= new HashSet<>() ;
+ 
+	public Set<String> getCyberSecuritySet() {
+		return cyberSecuritySet;
+	}
+ 
+	public void setCyberSecuritySet(Set<String> cyberSecuritySet) {
+		this.cyberSecuritySet = cyberSecuritySet;
+	}
+	public void  addCyberSecurityDetails (String details) {
+		cyberSecuritySet.add(details);
+		
+	}
+	public int findTheCountOfAnalystIdsBasedOnTheCyberSecurityType(String cyberSecurityType) {
+		int count=0;
+		for(var v:cyberSecuritySet) {
+			String id=v.split(":")[0];
+			String cyber=v.split(":")[1];
+			if(cyber.equalsIgnoreCase(cyberSecurityType)) {
+				count++;
+			}
+			if(count>0) {
+				return count;
+			}
+			}
+		return -1;
+	}
+
+
+
+	public List<String> findAnalystIdsBasedOnTheCyberSecurityType(String cyberSecurityType){
+		List<String> lis=new ArrayList<>();
+		for(var v:cyberSecuritySet) {
+			String id=v.split(":")[0];
+			String cyber=v.split(":")[1];
+			if(cyber.equalsIgnoreCase(cyberSecurityType)) {
+				lis.add(id);
+			}	
+	}
+		return lis;
+}
+}

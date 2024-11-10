@@ -1,0 +1,240 @@
+tejarame0624
+Teja2709*
+
+
+
+STRINGS
+
+
+AscendingChartCheaker.java
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class AscendingChartCheaker {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the word");
+		String s=sc.nextLine();
+		if(s.length()>=2 && s.matches("[a-z]+.*[^!@#$&\\s0-9]"))
+		{
+			char [] c=s.toCharArray();
+					Arrays.sort(c);
+					String s1=new String(c);
+					//System.out.println(s1);
+					//System.out.println(s);
+					//String ns=new String(s);
+				if(s1.equals(s))
+					{
+						System.out.println(s+" string is in order");
+					}
+					else
+					{
+						System.out.println(s+" String not in order");
+					}
+			
+		}
+		else
+		{
+			System.out.println(s+" is invalid string");
+			//return;
+		}
+		
+		
+
+	}
+
+=================================================================================================================
+Roman_Integer.java
+
+import java.util.Scanner;
+public class Roman_Integer {
+
+	public int getValue(char ch)
+	{
+		switch(ch)
+		{
+		case 'I':return 1;
+		case 'V':return 5;
+		case 'X':return 10;
+		case 'L':return 50;
+		case 'C':return 100;
+		case 'D':return 500;
+		case 'M':return 1000;
+		default :return 0;
+		}
+	}
+
+
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the roman ");
+		String roman=sc.next();
+		if(!roman.matches("[IVXLCDM]+"))
+		{
+			System.out.println("Invalid string");
+			return;
+		}
+		int len=roman.length();
+		int sum=0;
+		Roman_Integer ri=new Roman_Integer();
+		for(int i=0;i<len;i++)
+		{
+			char ch1=roman.charAt(i);
+			
+			if((i+1)<len  && ri.getValue(ch1) < ri.getValue(roman.charAt(i+1)) )
+			{
+				sum=sum-ri.getValue(ch1);
+			}
+			else
+			{
+				sum=sum+ri.getValue(ch1);
+			}
+		}
+		System.out.println("The value of given Roman "+roman+" is "+sum);
+		
+		// TODO Auto-generated method stub
+
+	}
+
+}
+
+
+=============================================================================================================
+VerbiageHunt.java
+
+import java.util.Scanner;
+
+public class VerbiageHunt {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter word count");
+		int wc=sc.nextInt();
+		
+		if(wc<2)
+		{
+			System.out.println("Invalid word count");
+			return;
+		}
+		System.out.println("Enter the words");
+		String [] s=new String[wc];
+		for(int i=0;i<s.length;i++)
+		{
+			s[i]=sc.next();
+			if(!s[i].matches("[a-zA-Z]+"))
+			{
+				System.out.println(s[i]+" is an invalid word");
+				return;
+			}
+		}
+		
+		
+		
+		System.out.println("Enter the character to search");
+		char c=sc.next().charAt(0);
+		StringBuilder sb1=new StringBuilder("Without duplicates: ");
+		StringBuilder sb2=new StringBuilder("With duplicates: ");
+		int countwd=0;
+		int countd=0;
+		
+		
+		for(String s1:s)
+		{
+			int count=0;
+			
+			
+			
+			
+			for(int i=0;i<s1.length();i++)
+			{
+				
+				if(c==s1.charAt(i))
+				{
+					count++;
+				}
+			}
+				if(count==1)
+				{
+					sb1.append(s1).append(" ");
+					countwd++;
+				}
+				if (count>1)
+				{
+					sb2.append(s1).append(" ");
+					countd++;
+				}
+		}
+		if(countwd==0 && countd==0)
+		{
+			System.out.println("No words found");
+				
+		}
+		else 
+		{
+			if(countwd>0)
+			{
+				System.out.println(sb1.toString());
+			}
+			if(countd>0)
+			{
+			System.out.println(sb2.toString());
+			}
+		}
+	}
+
+}
+
+====================================================================================================
+LastIndex.java
+import java.util.Scanner;
+ 
+public class UserInterface
+{
+	public static void main(String[] args)
+	{		
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the String");
+		String input=sc.nextLine();
+		String result=captalizedWord(input);
+		System.out.println(result);
+	}
+	
+		
+	public static String captalizedWord(String input)
+	{
+		
+		String[] words=input.split(" ");
+		StringBuilder sb=new StringBuilder();
+		
+		for(String word:words)
+		{
+			if(isValid(word))
+			{
+			
+				if(word.length()>0)
+				{
+					sb.append(word.substring(0,word.length()-1));
+					sb.append(Character.toUpperCase(word.charAt(word.length()-1)));
+					
+					if(!word.equals(words[words.length-1]))
+					{
+						sb.append(" ");
+					}
+				}
+			}
+			
+		}
+		return sb.toString().trim();
+			
+	}
+	public static boolean isValid(String word)
+	{
+		return word.matches("[a-zA-Z]");
+	}
+ 
+}
+ 
+

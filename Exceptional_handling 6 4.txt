@@ -1,0 +1,431 @@
+1. Online Shopping 
+
+
+package online_shoping;
+
+public class ShoppingSystem {
+	public boolean validateOrderDetails(int quant,float price,String orderdate,String deliverydate)throws InvalidOrderDetailsException
+	{
+		if(quant<=0)
+		{
+			throw new InvalidOrderDetailsException("Invalid quantity: must be greater than 0");
+		}9
+		if(price<=0)
+		{
+			throw new InvalidOrderDetailsException("Invalid price per unit: must be greater than 0");
+		}
+
+		LocalDate l1=LocalDate.parse(orderdate);
+		LocalDate l2=LocalDate.parse(delivarydate);
+		//int re=deliverydate.compareTo(orderdate);
+		
+		if(l1.isAfter(l2)
+		{
+			throw new InvalidOrderDetailsException("Invalid dates: order date must be before delivery date");
+		}
+		
+		
+		return true;
+	}
+	public String getOrderStatuc()
+	{
+		return "Order details are valid your order will be delivered successfully";
+	}
+
+}
+
+
+import java.util.Scanner;
+
+public class UserInterface {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		ShoppingSystem ss=new ShoppingSystem();
+		try
+		{
+			System.out.println("Enter the quantity");
+			int quant=sc.nextInt();
+			System.out.println("Enter the price");
+			float price=sc.nextFloat();
+			System.out.println("Order date");
+			String od=sc.nextLine();
+			sc.nextLine();
+			System.out.println("Delivary date");
+			String dd=sc.nextLine();
+			boolean b=ss.validateOrderDetails(quant, price, od, dd);
+			if(b)
+			{
+				System.out.println(ss.getOrderStatuc());
+			}
+			
+		}
+		catch(InvalidOrderDetailsException e)
+		{
+			System.out.println(e.getMessage());
+		}
+	}
+
+}
+package online_shoping;
+
+public class InvalidOrderDetailsException extends Exception{
+	
+	InvalidOrderDetailsException(String msg)
+	{
+		super(msg);
+	}
+}
+======================================================================================================================
+//EliteLibrary Exception Answer
+ 
+package Exception_Handling;
+ 
+public class InvalidLibraryException  extends Exception{
+	InvalidLibraryException(String msg)
+	{
+		super(msg);
+	}
+}
+ 
+ 
+
+ 
+package Exception_Handling;
+ 
+public class LibraryManagementSystem {
+	public String validateMembershipDetails(String libraryCardNumber, String membershipType, String password) throws InvalidLibraryException {
+		String r="Regular";
+		String p="Premium";
+		String v="VIP";
+
+		if(libraryCardNumber.length()!=6  ||  !libraryCardNumber.matches("^[A-Z]{2}[0-9]{4}$"))          //[A-Z]{2}(0-9){4}
+		{
+			throw new InvalidLibraryException("Invalid library card number");
+		}
+		else if(!membershipType.equals(r) && !membershipType.equals(p) && !membershipType.equals(v) )
+		{
+			throw new InvalidLibraryException("Invalid membership type");
+		}
+		else if ((!password.matches("^[A-Z]{5} [ 0-9]{3}$")) ||  password.length()!=8 )
+		{
+			throw new InvalidLibraryException("Invalid password");
+		}
+		else
+		{
+			return "Validation successful";
+		}
+
+ 
+		
+	}
+ 
+	public double calculateMembershipFee(String membershipType) {
+		if(membershipType.equals("Regular"))
+		{
+			return 100;
+		}
+		else if(membershipType.equals("Premium"))
+		{
+			return 250;
+		}
+		else
+		{
+			return 300;
+		}
+		
+	}
+ 
+ 
+}
+
+ 
+ 
+package Exception_Handling;
+ 
+import java.util.Scanner;
+ 
+public class UserInterface {
+ 
+	public static void main(String[] args) {
+		LibraryManagementSystem  lms=new LibraryManagementSystem ();
+
+		Scanner sc = new Scanner(System.in);
+		try {
+		System.out.println("Enter the name");
+		String name=sc.nextLine();
+		System.out.println("Enter the library card number");
+		String libraryCard=sc.nextLine();
+		System.out.println("Enter the membership type");
+		String type=sc.nextLine();
+		System.out.println("Enter the password");
+		String pass=sc.nextLine();
+		//validate membership details
+		String validationMessage=lms.validateMembershipDetails(libraryCard, type, pass);
+		System.out.println( validationMessage);
+		//Calculate membership fee
+		double memshipFee=lms.calculateMembershipFee(type);
+		System.out.println("Membership Fee "+ memshipFee);
+
+		}
+		catch(InvalidLibraryException e)
+		{
+			System.out.println(e.getMessage());
+		}
+	}
+ 
+ 
+}
+
+===============================================================================================
+3 .Whats_app_Messaging
+
+package Whats_app_Messaging;
+
+public class InvalidDataException extends Exception {
+	
+	InvalidDataException(String msg)
+	{
+		super(msg);
+	}
+}
+
+
+
+package Whats_app_Messaging;
+
+public class WhatsAppMessagingSystem {
+	
+	
+	    public boolean validateWhatsAppGroup(String groupCount) throws InvalidDataException {
+	        int count = Integer.parseInt(groupCount);
+	        if (count > 10) {
+	        	 throw new InvalidDataException("GroupCount should be less than or equal to 10");
+	           
+	        } 
+	        return true;
+	    }
+	 
+	    public boolean validateMessageText(String messageText) throws InvalidDataException {
+	        if (messageText.length() >20) {
+	        	throw new InvalidDataException("MessageText too long to process");
+	        }
+	        return true;
+	    }
+	 
+	    public double calculateTotalCost(String groupCount) {
+	        int count = Integer.parseInt(groupCount);
+	        double cost = 0.0;
+	        
+	        // Subtract 3 from the group count and calculate cost based on remaining groups
+	        count -= 3;
+	        
+	        if (count > 0) {
+	            cost = count * 2.5;
+	        }
+	 
+	        return cost;
+	    }
+	
+
+}
+
+
+package Whats_app_Messaging;
+
+import java.util.Scanner;
+
+public class UserInterface {
+
+	public static void main(String[] args) {
+		
+		        Scanner scanner = new Scanner(System.in);
+		        System.out.println("Enter number of groups");
+			String countOfGroup = scanner.nextLine();
+		        System.out.println("Enter the messageText");
+			 String text = scanner.nextLine();
+		        
+		       
+		        
+		        WhatsAppMessagingSystem whatsapp = new WhatsAppMessagingSystem();
+		 
+		        try {
+		        	
+		            // Validate number of groups
+		            whatsapp.validateWhatsAppGroup(countOfGroup) ;
+		            
+		            
+		            
+		            whatsapp.validateMessageText(text);
+		            	
+		             double cost = whatsapp.calculateTotalCost(countOfGroup);
+		 		 System.out.println("Total cost: " + cost);
+		            	
+		               
+		            
+		 
+		            // Validate message text length
+		           
+		            // If validations pass, calculate and print the cost
+		           
+		        } catch (InvalidDataException e) {
+		            System.out.println(e.getMessage());
+		        }
+		        
+		        scanner.close();
+		    }
+		
+
+	
+
+}
+==============================================================================================================
+4.Booking Freight
+
+package book_freight;
+
+public class InvalidOrderException extends Exception {
+	
+	InvalidOrderException(String msg)
+	{
+		super(msg);
+	}
+
+}
+
+
+public class BookFreight {
+	
+		
+		private String orderId;
+		private String orderDate;
+		private String shippingType;
+		private double weight;
+
+		public String getOrderId() {
+			return orderId;
+		}
+		public void setOrderId(String orderId) {
+			this.orderId = orderId;
+		}
+		public String getOrderDate() {
+			return orderDate;
+		}
+		public void setOrderDate(String orderDate) {
+			this.orderDate = orderDate;
+		}
+		public String getShippingType() {
+			return shippingType;
+		}
+		public void setShippingType(String shippingType) {
+			this.shippingType = shippingType;
+		}
+		public double getWeight() {
+			return weight;
+		}
+		public void setWeight(double weight) {
+			this.weight = weight;
+		}
+		public BookFreight()
+		{
+			
+		}
+		public BookFreight(String orderId, String orderDate, String shippingType, double weight) {
+			super();
+			this.orderId = orderId;
+			this.orderDate = orderDate;
+			this.shippingType = shippingType;
+			this.weight = weight;
+		}
+		
+             public double calculateShippingCost()
+		{
+			double shippingCost=0.0;
+			if(shippingType.equals("Standard")) {
+				
+				shippingCost = 8.5*weight;
+				//return shippingCost;
+			}
+			else if(shippingType.equals("Expedited")) {
+				
+				shippingCost = 15*weight;
+				//return shippingCost;
+				
+			}
+			else if(shippingType.equals("Priority ")) {
+				
+				shippingCost = 25*weight;
+				//return shippingCost;
+			}
+			
+		return shippingCost;
+	}
+	
+
+}
+
+
+import java.util.Scanner;
+import java.util.regex.*;
+
+public class UserInterface {
+
+	
+	
+		private static String validateOrderID(String orderId) throws InvalidOrderException {
+	        //Fill the code here
+			String Id = "ORD[0-9]{5}";
+			Pattern p = Pattern.compile(Id);
+			Matcher m = p.matcher(orderId);
+//id.matches("ORD[0-9]{5}")
+			if(m.matches())
+			{
+				return orderId;
+			}
+			else {
+				 throw new InvalidOrderException 
+					 ("Invalid order ID. It should start with 'ORD' followed by 5 digits.");		 
+			}
+	    }
+	    private static String validateShippingType(String shippingType) throws InvalidOrderException {
+	        //Fill the code here
+	    	if(shippingType.equalsIgnoreCase("Standard")||shippingType.equalsIgnoreCase("Expedited")||shippingType.equalsIgnoreCase("priority")) {
+	    		return shippingType;
+	    	}
+	    	else {
+	    		throw new InvalidOrderException
+	    		("Invalid shipping type. It should be either Standard, Expedited, or Priority.");
+	    	}
+	    }
+
+
+		public static void main(String[] args) {
+			BookFreight ob1 = new BookFreight();
+			UserInterface ob = new UserInterface();
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Enter Order ID");
+			String id = scanner.nextLine();
+			System.out.println("Enter Order Date");
+			String date = scanner.nextLine();
+			System.out.println("Enter Shipping Type");
+			String type = scanner.next();
+			System.out.println("Enter Total Weight");
+			double weight = scanner.nextDouble();
+			ob1.setOrderId(id);
+			ob1.setOrderDate(date);
+			ob1.setShippingType(type);
+			ob1.setWeight(weight);
+			try {
+				ob.validateOrderID(id);
+				ob.validateShippingType(type);
+			}
+			catch(InvalidOrderException e) {
+				System.out.print(e.getMessage());
+			}
+			double cost = ob1.calculateShippingCost();
+			System.out.println("Shipping Cost: Rs."+cost);
+	 
+			//Fill the code here
+		}	
+	}
+

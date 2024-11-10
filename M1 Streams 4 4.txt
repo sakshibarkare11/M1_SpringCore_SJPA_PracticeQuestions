@@ -1,0 +1,738 @@
+Streams
+1.spicesort
+
+import java.util.Objects;
+
+public class Spice {
+	private String spiceName;
+	private String origin;
+	private String color;
+	private int shelfLife;
+	@Override
+	public int hashCode() {
+		return Objects.hash(color, origin, shelfLife, spiceName);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Spice other = (Spice) obj;
+		return Objects.equals(color, other.color) && Objects.equals(origin, other.origin)
+				&& shelfLife == other.shelfLife && Objects.equals(spiceName, other.spiceName);
+	}
+	
+	
+	@Override
+	public String toString() {
+		return  spiceName + "," + origin + "," + color + "," + shelfLife ;
+	}
+	public String getSpiceName() {
+		return spiceName;
+	}
+	public void setSpiceName(String spiceName) {
+		this.spiceName = spiceName;
+	}
+	public String getOrigin() {
+		return origin;
+	}
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public int getShelfLife() {
+		return shelfLife;
+	}
+	public void setShelfLife(int shelfLife) {
+		this.shelfLife = shelfLife;
+	}
+	public Spice(String spiceName,String origin,String color,int shelfLife) {
+		this.spiceName=spiceName;
+		this.origin=origin;
+		this.color=color;
+		this.shelfLife=shelfLife;
+	}
+
+}
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Stream;
+
+public class SpiceUtility {
+	public  Stream<Spice>retriveSpicesByOrigin(List<Spice>spiceList,String origin){
+		//return spiceList.stream().filter(h->h.getOrgin().equals(origin));
+   return spiceList.stream()
+		   .filter(spice->spice.getOrigin().equals(origin));
+	}
+	
+	public  Stream<Spice> retrieveSpicesInAscendingOrderByShelfLife(List<Spice>spiceList){
+return spiceList.stream().sorted((s1,s2)-> Integer.compare
+		return spiceList.stream().sorted((s1,s2)->Integer.compare(s1.getShelfLife(),s2.getShelfLife()));
+	}
+	
+	public Stream<Spice>retrieveUniqueSpices(List<Spice>spiceList){
+		return spiceList.stream().distinct();
+	}
+
+}
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class UserInterface {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the number of spices");
+		int noOfSpices=sc.nextInt();
+		sc.nextLine();
+		
+		List<Spice> spiceList=new ArrayList<>();
+		System.out.println("Enter the spice details");
+		for(int i=0;i<noOfSpices;i++) {
+			String[] details=sc.next().split(":");
+			String spiceName=details[0];
+			String origin=details[1];
+			String color=details[2];
+			int shelfLife=Integer.parseInt(details[3]);
+			Spice spice=new Spice(spiceName,origin,color,shelfLife);
+			spiceList.add(spice);
+		}
+		SpiceUtility su=new SpiceUtility();
+		sc.nextLine();
+		
+		System.out.println("Enter the origin");//
+		String origin=sc.nextLine();
+		
+		List<Spice> sbo=su.retriveSpicesByOrigin(spiceList, origin).collect(Collectors.toList());
+		
+	
+		if(sbo.isEmpty()) {
+			System.out.println("No spices found for the given origin "+origin);
+		}else {
+			System.out.println("Spices in the given origin");
+			sbo.forEach(spice->System.out.println(spice.toString()));
+		}
+		
+		List<Spice>ssbs=su.retrieveSpicesInAscendingOrderByShelfLife(spiceList).collect(Collectors.toList());
+		System.out.println("Spices in ascending order of shelf life");
+		ssbs.forEach(spice->System.out.println(spice.toString()));
+		
+		List<Spice> uniqueSpices=su.retrieveUniqueSpices(spiceList).collect(Collectors.toList());
+		System.out.println("Unique spices are:");
+		uniqueSpices.forEach(spice->System.out.println(spice.toString()));
+		
+
+	}
+
+}
+===================================================================
+
+2.ParkedWithLove
+
+
+public class Parking {
+	private String parkingLotName;
+	private int capacity;
+	public Parking(String parkingLotName, int capacity, int parkedcarsCount, int parkedbikesCount) {
+		super();
+		this.parkingLotName = parkingLotName;
+		this.capacity = capacity;
+		this.parkedcarsCount = parkedcarsCount;
+		this.parkedbikesCount = parkedbikesCount;
+	}
+	private int parkedcarsCount;
+	private int parkedbikesCount;
+	public String getParkingLotName() {
+		return parkingLotName;
+	}
+	@Override
+	public String toString() {
+		return parkingLotName +", "+ capacity + ", "+ parkedcarsCount + ", "+  parkedbikesCount;
+	}
+ 
+	public void setParkingLotName(String parkingLotName) {
+		this.parkingLotName = parkingLotName;
+	}
+	public int getCapacity() {
+		return capacity;
+	}
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	public int getParkedcarsCount() {
+		return parkedcarsCount;
+	}
+	public void setParkedcarsCount(int parkedcarsCount) {
+		this.parkedcarsCount = parkedcarsCount;
+	}
+	public int getParkedbikesCount() {
+		return parkedbikesCount;
+	}
+	public void setParkedbikesCount(int parkedbikesCount) {
+		this.parkedbikesCount = parkedbikesCount;
+	}
+}
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Stream;
+ 
+public class ParkingStream {
+		public Stream<Parking> retrieveParkingDetailsInDescendigOrderByCapacity(List<Parking> ParkingList){
+			return ParkingList.stream().sorted(Comparator.comparingInt(Parking::getCapacity).reversed());
+			//return spiceList.stream().sorted((s1,s2)->Integer.compare(s1.getShelfLife(),s2.getShelfLife()));
+		}
+		public Stream<Parking> retrieveParkingLotDetailsHavingAvailableSpacesForCars(List<Parking> ParkingList) {
+			return ParkingList.stream().filter(e->e.getParkedcarsCount()<e.getCapacity()&&e.getParkedcarsCount()<e.getParkedbikesCount());
+		}
+		public Stream<Parking> retrieveParkingLotDetailsHavingNoAvailableSpacesForBikes(List<Parking> ParkingList) {
+			return ParkingList.stream().filter(e->(e.getCapacity()/2)==e.getParkedbikesCount());
+		}
+}
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Stream;
+ 
+public class UserInterface {
+ 
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		ParkingStream ps = new ParkingStream();
+		List<Parking> lis = new ArrayList<Parking>();
+		System.out.println("Enter the parking lots");
+		int slots = sc.nextInt();
+		sc.nextLine();
+		System.out.println("Enter the parking details");
+		for(int i=0; i<slots; i++) {
+			String details = sc.nextLine();
+			String[] st = details.split(":");
+			String parkingfloor = st[0];
+			int capacity = Integer.parseInt(st[1]);
+			int carcount = Integer.parseInt(st[2]);
+			int bikecount = Integer.parseInt(st[3]);
+			Parking p = new Parking(parkingfloor, capacity, carcount, bikecount);
+			lis.add(p);
+		}
+		Stream<Parking> sp= ps.retrieveParkingDetailsInDescendigOrderByCapacity(lis);
+		List<Parking> l = sp.toList();
+		for(var v: l) {
+			System.out.println(v);
+	}
+		System.out.println();
+		Stream<Parking> sp1 = ps.retrieveParkingLotDetailsHavingAvailableSpacesForCars(lis);
+		List<Parking> l1 = sp1.toList();
+		for(var v: l1) {
+			System.out.println(v);
+	}
+		System.out.println();
+		Stream<Parking> sp2 = ps.retrieveParkingLotDetailsHavingNoAvailableSpacesForBikes(lis);
+		List<Parking> l2 = sp2.toList();
+		for(var v: l2) {
+			System.out.println(v);
+	}
+}
+}
+
+===================================================================
+3.WalletBank
+
+public class Account {
+	@Override
+	public String toString() {
+		return accountNumber  +" " +customerName + " " +
+				accountType +" " + balance  +" " + phoneNumber ;
+	}
+
+	private String accountNumber;
+	private String customerName;
+	private String accountType;
+	private double balance;
+	private String phoneNumber;
+	
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Account(String accountNumber, String customerName, String accountType, double balance, String phoneNumber) {
+		super();
+		this.accountNumber = accountNumber;
+		this.customerName = customerName;
+		this.accountType = accountType;
+		this.balance = balance;
+		this.phoneNumber = phoneNumber;
+	}
+
+}
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+public class AccountUtil {
+	public Account retrieveAccountDetailsByAccountNumber(Stream<Account> accountStream,String accountNumber) {
+		return  accountStream.filter(account->account.getAccountNumber().equals(accountNumber)).findFirst().orElse(null);
+	}
+	
+	
+	
+    public List<Account> retrieveAccountDetailsByAccountType(Stream<Account> accountStream,String accountType) {
+		return accountStream.filter(a->a.getAccountType().equals(accountType)).toList();
+	}
+    
+    
+    public Stream<Account> retrieveAccountDetailsBalanceRange(Stream<Account> accountStream,double minimumRange,double maximumRange) {
+    	return accountStream.filter(account->account.getBalance()>= minimumRange && account.getBalance()<=maximumRange);
+		
+	}
+
+	
+	
+
+}
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class UserInterface {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the number of account details to be added");
+		int noOfAcc=sc.nextInt();
+		sc.nextLine();
+		List<Account> accountList=new ArrayList<>();
+		System.out.println("Enter the account details");
+		for(int i=0;i<noOfAcc;i++) {
+			String[] details=sc.next().split(",");
+			String accno=details[0];
+			String name=details[1];
+			String acctype=details[2];
+			double balance=Double.parseDouble(details[3]);
+			String phoneno=details[4];
+			Account a=new Account(accno,name,acctype,balance,phoneno);
+			accountList.add(a);
+		}
+		
+		AccountUtil au=new AccountUtil();
+		
+		System.out.println("Enter the Account Number");
+		String accno=sc.next();
+		
+	   Account b=au.retrieveAccountDetailsByAccountNumber(accountList.stream(),accno);
+		if(b==null) {
+			System.out.println("no account found");
+		}else {
+			System.out.println(b.toString());
+		}
+		System.out.println("Enter the Account type");
+		String acctype=sc.next();
+	List<Account> c=au.retrieveAccountDetailsByAccountType(accountList.stream(), acctype);
+	if(c.isEmpty()) {
+		System.out.println("no account found");
+	}else {
+		for(Account a:c)
+		{
+			System.out.println(a.toString());
+
+		}
+		}
+	
+	System.out.println("Enter the minimum and maximum balance range nto show account details");
+	double min=Double.parseDouble(sc.next());
+	double max=Double.parseDouble(sc.next());
+	
+	Stream<Account> d=au.retrieveAccountDetailsBalanceRange(accountList.stream(), min, max);
+	
+	List<String> ee=d.map(account->account.getAccountNumber()).collect(Collectors.toList());
+	System.out.println("Account details within the balance range are");
+	if(!ee.isEmpty())
+	{
+		
+		ee.forEach(a->System.out.println(a));
+	}
+	else
+	{
+		System.out.println("not found");
+	}
+	
+
+		
+
+	}
+
+}
+===================================================================
+
+4.public class Participant {
+	/*Enter the number of participants:
+		2
+		Enter participant details in the format: participantId:participantName:foodType:hotelName:points
+		546:raj:a:x:7
+		6576:sai:b:y:8
+		Enter number of top participants by points to retrieve:
+		1
+		Top 1 participants by points:
+		6576 - 8.0*/
+
+	private String participantId;
+	private String participantName;
+	private String foodType;
+	private String hotelName;
+	private double points;
+ 
+	public String getParticipantId() {
+		return participantId;
+	}
+ 
+	public void setParticipantId(String participantId) {
+		this.participantId = participantId;
+	}
+ 
+	public String getParticipantName() {
+		return participantName;
+	}
+ 
+	public void setParticipantName(String participantName) {
+		this.participantName = participantName;
+	}
+ 
+	public String getFoodType() {
+		return foodType;
+	}
+ 
+	public void setFoodType(String foodType) {
+		this.foodType = foodType;
+	}
+ 
+	public String getHotelName() {
+		return hotelName;
+	}
+ 
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
+	}
+ 
+	public double getPoints() {
+		return points;
+	}
+ 
+	public void setPoints(double points) {
+		this.points = points;
+	}
+ 
+    public Participant(){
+        super();
+    }
+    
+	public Participant(String participantId, String participantName, String foodType, String hotelName, double points) {
+		super();
+		this.participantId = participantId;
+		this.participantName = participantName;
+		this.foodType = foodType;
+		this.hotelName = hotelName;
+		this.points = points;
+	}
+ 
+}
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+ 
+public class ParticipantUtil {
+ 
+    public Participant retrieveParticipantDetailsByParticipantId(Stream<Participant> participantStream, String participantId) {
+        return participantStream
+                .filter(p -> p.getParticipantId().equals(participantId))
+                .findFirst()
+                .orElse(null);
+    }
+ 
+    public List<Participant> retrieveParticipantDetailsByFoodType(Stream<Participant> participantStream, String foodType) {
+        return participantStream
+                .filter(p -> p.getFoodType().equalsIgnoreCase(foodType))
+                .collect(Collectors.toList());
+    }
+ 
+    public List<Participant> retrieveTopParticipantIdsByPoints(Stream<Participant> participantStream, int topCount) {
+        return participantStream
+                .sorted((p1, p2) -> Double.compare(p2.getPoints(), p1.getPoints())) // Sort descending by points
+                .limit(topCount)
+                .collect(Collectors.toList());
+    }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+ 
+public class UserInterface {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ParticipantUtil pu = new ParticipantUtil();
+        
+        System.out.println("Enter the number of participants:");
+        int totalParticipants = sc.nextInt();
+        sc.nextLine(); // Consume newline
+        
+        List<Participant> participants = new ArrayList<>();
+        
+        System.out.println("Enter participant details in the format: participantId:participantName:foodType:hotelName:points");
+        for (int i = 0; i < totalParticipants; i++) {
+            String participantDetails = sc.nextLine();
+            String[] arr = participantDetails.split(":");
+            
+            if (arr.length == 5) {
+                String participantId = arr[0];
+                String participantName = arr[1];
+                String foodType = arr[2];
+                String hotelName = arr[3];
+                double points = Double.parseDouble(arr[4]);
+                
+                Participant participant = new Participant(participantId, participantName, foodType, hotelName, points);
+                participants.add(participant);
+            } else {
+                System.out.println("Invalid input format. Please enter details again.");
+                i--; // Ask for input again
+            }
+        }
+        
+        // Now you have a list of participants, you can use ParticipantUtil methods
+        
+        // Example: Retrieve top participant IDs by points
+        System.out.println("Enter number of top participants by points to retrieve:");
+        int topCount = sc.nextInt();
+        List<Participant> topParticipants = pu.retrieveTopParticipantIdsByPoints(participants.stream(), topCount);
+        System.out.println("Top " + topCount + " participants by points:");
+        for (Participant p : topParticipants) {
+            System.out.println(p.getParticipantId() + " - " + p.getPoints());
+        }
+        
+        sc.close();
+    }
+}
+
+
+************
+MovieBookingSystem
+
+Jane, an avid movie lover, uses the cinema's online booking system to secure a ticket for the latest blockbuster. She enters her name, booking date, and ticket type, ensuring they meet the system's validation rules. With all details correct, the system confirms her booking, and Jane eagerly awaits her premium movie experience.
+
+You need to design a Java program to collect customer details and get movie ticket booking information, with exception handling to manage various error scenarios.
+
+
+
+Consider the following scenario:
+
+You receive input that is the customerName, bookingDate, and ticketType in the format of a string in the UserInterface class.
+
+Component Specification: Class - MovieBookingSystem
+
+
+
+
+
+
+Type (Method)
+ 
+Responsibilities
+ 
+
+public boolean validateCustomerDetails(String customerName, String bookingDate, String ticketType)
+ 
+
+This method takes three arguments customerName as string, bookingDate as string and ticketType as string and validate the same as per the validation rules.If valid return true else throw "InvalidCustomerDetailsException" with an appropriate message.
+•The customerName should contain only alphabets and must start with an uppercase letter. Example: John. There should not be any other special characters or numbers allowed in customerName.
+•The bookingDate should follow the format yyyy-MM-dd . Example: 2024-06-15. Parse the input string into a LocalDate object and return the same.  If the date string is invalid, the method should handle the DateTimeParseException directly and rethrow it as an InvalidCustomerDetailsException with the appropriate message.
+•The ticketType should be either "standard" or "premium" (case sensitive).
+
+public String getBookingConfirmation()
+ 
+This method returns a message "Your movie ticket is booked. Enjoy the show!"
+
+
+Note : If the user inputs are valid, invoke the getBookingConfirmation method and display the message "Your movie ticket is booked. Enjoy the show!".
+ 
+
+Component Specification: InvalidCustomerDetailsException(This class inherits the Exception Class)
+
+
+
+Type (Class) 
+
+Responsibilities
+
+
+InvalidCustomerDetailsException
+ Provided with a single-argument constructor: public InvalidCustomerDetailsException( String message). Thrown when customerName or the bookingDate or the ticketType does not follow the below validation rules. 
+
+
+Component Specification: UserInterface
+
+
+Type (Class) 
+
+Responsibilities
+
+
+UserInterface 
+ In the main method get the  customerName, bookingDate and ticketType from the user , invoke validateCustomerDetails and if valid invoke the getBookingConfirmation and display the message. If the validation is invalid handle the exception appropriately 
+
+Note:
+•Propagate the exceptions that occur in MovieBookingSystem class and handle them in main method.
+•If the customerName is invalid then display the message as "Invalid customer name"
+•If the bookingDate is invalid then display the message as "Invalid booking date"
+•If the ticketType is invalid then display the message as "Invalid ticket type"
+•In the sample input and output provided, the highlighted text in bold corresponds to the input given by the user, and the rest of the text represents the output.
+•Ensure to follow the object-oriented specifications provided in the question description.
+•Ensure to provide the names for classes, attributes, and methods as specified in the question description.
+•Adhere to the code template, if provided.
+•Please do not use System.exit(0); to terminate the program.
+
+
+
+
+Sample Input / Output 1:
+
+
+
+
+Enter Customer Name
+
+Keshav
+
+Enter Booking Date
+
+2024-06-25
+
+Enter Ticket Type
+
+standard
+
+Your movie ticket is booked. Enjoy the show!
+
+
+
+
+Sample Input / Output 2:
+
+
+
+
+Enter Customer Name
+
+Seetha@gmail.com
+
+Enter Booking Date
+
+2025-08-09
+
+
+Enter Ticket Type
+
+premium
+
+Invalid customer name
+
+
+
+
+
+Sample Input / Output 3:
+
+
+
+
+Enter Customer Name
+
+Suresh
+
+Enter Booking Date
+
+12-08-2025
+
+Enter Ticket Type
+
+standard
+
+Invalid booking date
+
+
+
+
+
+Sample Input / Output 4:
+
+
+
+
+Enter Customer Name
+
+Ram
+
+Enter Booking Date
+
+2025-12-08
+
+Enter Ticket Type
+
+Balcony
+
+Invalid ticket type
+
